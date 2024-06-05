@@ -7,43 +7,56 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        return Book::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=>['required']
+        ]);
+        // Instanciar nuevo libro
+        $book = new Book;
+        // Asignar el nombre al libro
+        $book->title=$request->input('title');
+        // Guardar en la BD
+        $book->save();
+
+        // Devolver el libro
+        return $book;
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+    // Route Binding, proceso de pasar el modelo como parametro a la funcion "show"
+    // para mostrar todas las columnas del registro que se encontró
     public function show(Book $book)
     {
-        //
+        return $book;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Book $book)
     {
-        //
+        $request->validate([
+            'title'=>['required']
+        ]);
+        // Asignar el nuevo nombre al libro
+        $book->title=$request->input('title');
+        // Guardar en la BD
+        $book->save();
+
+        // Devolver el libro
+        return $book;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return response()->noContent();
     }
 }
