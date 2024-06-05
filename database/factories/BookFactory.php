@@ -16,6 +16,7 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        // Para crear datos falsos
         return [
             'title' => fake()->sentence()
         ];
