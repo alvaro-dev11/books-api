@@ -33,4 +33,22 @@ class BooksApiTest extends TestCase
             'title' => $book->title
         ]);
     }
+
+    /** @test */
+    function can_create_books()
+    {
+        // Agregando la validacion de los datos
+        $this->postJson(route('books.store'), [])
+        ->assertJsonValidationErrorFor('title');
+        
+        $this->postJson(route('books.store'), [
+            'title' => 'My new book'
+        ])->assertJsonFragment([
+            'title' => 'My new book'
+        ]);
+
+        $this->assertDatabaseHas('books', [
+            'title' => 'My new book'
+        ]);
+    }
 }
