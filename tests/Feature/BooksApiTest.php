@@ -39,8 +39,8 @@ class BooksApiTest extends TestCase
     {
         // Agregando la validacion de los datos
         $this->postJson(route('books.store'), [])
-        ->assertJsonValidationErrorFor('title');
-        
+            ->assertJsonValidationErrorFor('title');
+
         $this->postJson(route('books.store'), [
             'title' => 'My new book'
         ])->assertJsonFragment([
@@ -49,6 +49,22 @@ class BooksApiTest extends TestCase
 
         $this->assertDatabaseHas('books', [
             'title' => 'My new book'
+        ]);
+    }
+
+    /** @test */
+    function can_update_books()
+    {
+        $book = Book::factory()->create();
+
+        // Validando los datos
+        $this->patchJson(route('books.update', $book), [])
+            ->assertJsonValidationErrorFor('title');
+
+        $this->patchJson(route('books.update', $book), [
+            'title'=>'Edited book'
+        ])->assertJsonFragment([
+            'title'=>'Edited book'
         ]);
     }
 }
